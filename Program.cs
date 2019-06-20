@@ -4,79 +4,98 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace reversestring
+namespace StackOperations
 {
-    public class Program
+    class Program
     {
         static void Main(string[] args)
         {
-            string InputString = GetInputString(args);
-            string revstr = Revwithstack(InputString);
-            Console.WriteLine("1st approach result" + " " + revstr);
-            string revstr1 = ReverseString(InputString);
-            Console.WriteLine("2nd approach result" + " " + revstr1);
-            string revstr2 = ReverseNostack(InputString);
-            Console.WriteLine("3rd approach result" + " " + revstr2);
+            Stack<string> MyStack = new Stack<string>();
+            GetInputString(MyStack);
+            Console.ReadKey();
 
-
-            Console.ReadLine();
         }
-
-        public static string GetInputString(string[] args)
+        public static void GetInputString(Stack<string> MyStack)
         {
             string input;
+            Console.WriteLine("Stack operations" + "1.push" +" "+ "2.pop" +" "+ "3.greatest number in stack"+" "+"4.exit");
 
-            if (args.Any())
-                input = args[0];
-            else
-                {
-                Console.WriteLine("Input Any String");
+         
                 input = Console.ReadLine();
+            bool validIP = CheckInput(input);
+            if (validIP == false)
+            {
+                Console.WriteLine("enter a valid option");
+            }
+            else
+            {
+
+                if (input == "1")
+                {
+                    Console.WriteLine("enter the number to push");
+                    string pushnumber = Console.ReadLine();
+                    MyStack = PushStack(pushnumber, MyStack);
+
+                    GetInputString(MyStack);
+
                 }
-            return input;
+                if (input == "2")
+                {
+                    MyStack = PopStack(MyStack);
+                    GetInputString(MyStack);
+                }
+                if (input == "3")
+                {
+                    MyStack = MaxNumber(MyStack);
+                    GetInputString(MyStack);
+                }
+                if (input == "4")
+                    return;
+            }
         }
 
-
-
-        public static string Revwithstack(string str)
+        public static Stack<string> PushStack(string number,Stack<string> newstack)
         {
-            string revstr = null;
-            Stack<char> mystack = new Stack<char>();
-            foreach (var i in str)
-                mystack.Push(i);
-
-            foreach (var ix in mystack)
-              revstr += ix;
-            return revstr;
             
+            newstack.Push(number);
+            return newstack;
         }
-
-        public  static string ReverseString(string str1)
+        public static bool CheckInput(string input)
         {
-            string revstr = null;
-            Stack<char> newstack = new Stack<char>();
-            for(int i=0;i<str1.Length;i++)
-            {
-                newstack.Push(str1[i]);
-            }
-            for(int i=0;i<str1.Length;i++)
-            {
-                revstr += newstack.Pop();
-            }
-            return revstr;            
+            if (input == "1" || input == "2" || input == "3" || input == "4")
+                return true;
+            else
+                return false;
         }
 
-        public static string ReverseNostack(string str2)
+        public static Stack<string> PopStack(Stack<string> Mystack)
         {
-            string reversestr = null;           
-           
-           int count = str2.Length-1;
-           for(int i=count;i >= 0 ;i--)
-           {               
-               reversestr += str2[i];                            
-
-           }
-            return reversestr;            
+            Console.WriteLine("the poped element was" + Mystack.Pop());
+            return Mystack;
         }
+        public static Stack<string> MaxNumber(Stack<string> NewStack)
+        {
+            int? max = null;
+            int? value = null;
+            foreach(var imt in NewStack)
+            {
+                value = Convert.ToInt32(imt);
+                if(max==null)
+                {
+                    max = value;
+                }
+                else
+                {
+                    if(value>max)
+                    {
+                        max = value;
+                    }
+                }
+
+            }
+            Console.WriteLine("largest number in stack is:" + max);
+            return NewStack;
+        }
+       
     }
 }
